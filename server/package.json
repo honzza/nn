@@ -6,7 +6,9 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
   },
   "scripts": {
     "dev": "nodemon server"
