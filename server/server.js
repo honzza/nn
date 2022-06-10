@@ -21,7 +21,10 @@ const swaggerOptions = {
       },
       contact: { name: "honzza dvorak" },
     },
-    servers: [{ url: "http://localhost:5000" }],
+    servers: [
+      { url: "https://phone-bill-total-cost.appspot.com" },
+      { url: "http://localhost:5000" },
+    ],
   },
   apis: ["./routes/*-routes.js"],
 };

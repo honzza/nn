@@ -10,7 +10,7 @@
 const parseData = (req, res) => {
   // Parsing the raw text data into an array of objects
   // Single line format hh:mm:ss,NNN-NNN-NNN
-  const lines = req.body.split("\r\n");
+  const lines = req.body.split(/\r\n|\r|\n/g);
   const phoneData = [];
   for (let i = 0; i < lines.length; i++) {
     lines[i] = lines[i].split(",");
@@ -85,3 +85,6 @@ const parseData = (req, res) => {
 };
 
 exports.parseData = parseData;
+
+// Tests - possible issues zeros at the beginning and the end of the number
+// Immutability of the arrays
