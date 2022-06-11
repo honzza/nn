@@ -11,30 +11,22 @@ const parseData = (req, res) => {
   // Parsing the raw text data into an array of objects
   // Single line format hh:mm:ss,NNN-NNN-NNN
   const lines = req.body.split(/\r\n|\r|\n/g);
-  const phoneData = [];
-  for (let i = 0; i < lines.length; i++) {
-    lines[i] = lines[i].split(",");
-    const duration = lines[i][0].split(":");
-    const durationInSeconds =
-      parseInt(duration[0]) * 3600 +
-      parseInt(duration[1]) * 60 +
-      parseInt(duration[2]);
-    phoneData.push({
-      duration: durationInSeconds,
-      number: lines[i][1],
+  const phoneData = lines.map((line) => {
+    const [duration, number] = line.split(",");
+    const [hours, minutes, seconds] = duration.split(":");
+    return {
+      duration:
+        parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds),
+      number,
       cost: 0,
-    });
-  }
+    };
+  });
 
   // Calculating the cost of each phone call
   const phoneDataCharged = phoneData.map((item) => {
-    if (item.duration < 300) {
-      item.cost = item.duration * 3;
-    }
-    if (item.duration >= 300) {
-      const minutes = Math.ceil(item.duration / 60);
-      item.cost = minutes * 150;
-    }
+    item.duration < 300
+      ? (item.cost = item.duration * 3)
+      : (item.cost = Math.ceil(item.duration / 60) * 150);
     return item;
   });
 
@@ -44,10 +36,10 @@ const parseData = (req, res) => {
     const index = phoneDataGrouped.findIndex((i) => i.number === item.number);
     if (index === -1) {
       phoneDataGrouped.push(item);
-    } else {
-      phoneDataGrouped[index].cost += item.cost;
-      phoneDataGrouped[index].duration += item.duration;
+      return;
     }
+    phoneDataGrouped[index].cost += item.cost;
+    phoneDataGrouped[index].duration += item.duration;
   });
 
   // Sorting the phone numbers by duration and identifing the longest call
