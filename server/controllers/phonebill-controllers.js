@@ -56,7 +56,8 @@ const parseData = (req, res) => {
   // Sorting the phone numbers by number and identifying the smallest number
   const freePhoneNumber = longestCalls.sort((b, a) => {
     return (
-      parseInt(b.number.replace("-", "")) - parseInt(a.number.replace("-", ""))
+      parseInt(b.number.replaceAll("-", "")) -
+      parseInt(a.number.replaceAll("-", ""))
     );
   });
   // Removing the free phone number from the list
